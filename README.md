@@ -13,7 +13,7 @@ Similar tools exist for sure but this one is by far the quickest implementation 
 
 This is a tool written in Python (version 3.8.5 used). The .exe file (**FileHarvester.exe**) works on Microsoft Windows based machines by just double clicking.
 
-The source code file (**FileHarvester.py**) can be run on a system with python 3 installed (Version 3.6 and above needed). It only needs two additional libraries to run successfully. Use the package manager [pip](https://pip.pypa.io/en/stable/) to install them.
+The source code file (**FileHarvester.py**) can be run on a system with python 3 installed (Version 3.6 or newer needed). It only needs two additional libraries to run successfully. Use the package manager [pip](https://pip.pypa.io/en/stable/) to install them.
 
 ```bash
 pip install textract
