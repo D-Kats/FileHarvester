@@ -57,6 +57,10 @@ The tool comes with a GUI interface. User has to point the tool to a target fold
 
 - **DO NOT** choose an output folder inside the target collection folder...unless you liked the movie Inception!
 
+## KNOWN ISSUES
+
+- Keyword Harvesting fails to parse any document file and just copies everything when running the exe file. Keyword harvesting action works properly when running the script.
+
 ## License
 [MIT](https://github.com/D-Kats/FileHarvester/blob/main/LICENSE)
 
