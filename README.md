@@ -7,6 +7,8 @@ The tool will then create a CSV report file containing the copied file's origina
 
 The output folder, containing the copied harvested files and the CSV report, is then being zipped and MD5 hashed. The whole procedure is being reported in the verbose analysis pane of the tool and a log file is being created in the output folder after the completion of the analysis. 
 
+Similar tools exist for sure but this one is by far the quickest implementation when you want a specific collection from a targeted folder (e.g. the whole user folder on a Windows machine). Original file's metadata are not being altered and thus the whole harvesting procedure leaves the computer files intact.
+
 ## Installation
 
 This is a tool written in Python (version 3.8.5 used). The .exe file (**FileHarvester.exe**) works on Microsoft Windows based machines by just double clicking.
@@ -44,6 +46,10 @@ The tool comes with a GUI interface. User has to point the tool to a target fold
 - On a **Keyword Harvest Action**, files that were successfully read but no keyword was found in their content, won't be copied in the output folder but they will be logged in the CSV report with the proper flag, '**NOT COPIED**', '**NO KEYWORD FOUND**'.
 
 - In the case of multiple keywords to be searched in the files, the **keywords are to be given with a comma between them** and no space (e.g. keyword1,keyword2,keyword3). 
+
+- Document Files collected: doc, docx, xls, xlsx, pdf, pptx, odt, odf.
+
+- Media Files collected: jpg, png, avi, mov, mp4, 3gp. 
 
 ## License
 [MIT](https://github.com/D-Kats/FileHarvester/blob/main/LICENSE)
