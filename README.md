@@ -53,6 +53,10 @@ The tool comes with a GUI interface. User has to point the tool to a target fold
 
 - Media Files collected: jpg, png, avi, mov, mp4, 3gp. 
 
+## SUPER IMPORTANT INFO
+
+- **DO NOT** choose an output folder inside the target collection folder...unless you liked the movie Inception!
+
 ## License
 [MIT](https://github.com/D-Kats/FileHarvester/blob/main/LICENSE)
 
