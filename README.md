@@ -33,7 +33,7 @@ The tool comes with a GUI interface. User has to point the tool to a target fold
 
 **3.** Run a **Keyword Harvest action** only after providing the tool with an **output** folder destination and providing keyword/keywords in the specific input widget. The keyword harvest action is only supported for the Document File type and is going to be ignored if a media file type has been selected for collection. Document Files are going to be harvested throughout the folder and its sub-folders and copied to the output folder **only** if they contain one of the keywords in their content (flag: '**KEYWORD FOUND**'). The tool will try to read all of the files' contents but in the case it fails it will copy the unread file anyway and provide a flag that 'KEYWORD NOT SEARCHED'. The CSV report will be created, providing info about the files and the output folder will be zipped and MD5 hashed. A log file will then be created to the output folder.
 
-![GitHub Logo](/CaptureSN.PNG)
+![GitHub Logo](/MainGUI.PNG)
 
 ## IMPORTANT INFO
 
