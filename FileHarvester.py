@@ -21,14 +21,16 @@ from datetime import datetime
 #---functions definition
 def finalize(outputFolder, destinationFolderName):
 	os.chdir(outputFolder)
+	print('Compressing and archiving the files...')
 	shutil.make_archive(f'{destinationFolderName}', 'zip', f'{destinationFolderName}')
 	print(f'Archive file created with name: {destinationFolderName}.zip')
 	md5 = hashlib.md5(open(f'{destinationFolderName}.zip', 'rb').read()).hexdigest()
 	print(f'Md5 checksum of the archive file is {md5}')
 	try:
-		with open(f'{destinationFolderName}\\FileHarvester.log', 'w', encoding='utf-8') as fout:						
+		with open(f'{outputFolder}\\FileHarvester.log', 'w', encoding='utf-8') as fout:						
 			fout.write(window['-OUT-'].Get())
 			print('Log file was created successfully!')
+			print('Full Harvesting Job Completed Successfully!')
 	except:
 		print('Error writing log')
 	sg.PopupOK(f'Harvesting Completed successfully!', title=':)', background_color='#2a363b')
@@ -60,7 +62,8 @@ def calculate(CalculateInputFolder, CalculateFileCategory):
 						continue
 	if errorFlag:
 		print('Warning! Some files could not be read. Total file size may be bigger than reported')
-	return totalSize
+
+	return str(totalSize)
 
 def harvester(inputFolder, destinationFolder, FileCategory, OptionalKeywords=''):
 	TotalFilesCopied = 0
@@ -274,14 +277,16 @@ def harvester(inputFolder, destinationFolder, FileCategory, OptionalKeywords='')
 	if TotalFilesCopied>0: # an exw vrei arxeia na antigrapsw tote mono ftiaxnw to csv
 		if FileCategory == 'media':
 			try:
-				with open(f'{destinationFolder}\\MediaReport.csv', 'w', encoding='utf-8') as fout:
+				parentFolder = os.path.dirname(f'{destinationFolder}')
+				with open(f'{parentFolder}\\Report_Media.csv', 'w', encoding='utf-8') as fout:
 					fout.write(csvContent)
 				print('CSV media report file successfully created')
 			except:
 				print('CSV media report file could not be written to the output folder!')
 		else:
 			try:
-				with open(f'{destinationFolder}\\DocumentReport.csv', 'w', encoding='utf-8') as fout:
+				parentFolder = os.path.dirname(f'{destinationFolder}')
+				with open(f'{parentFolder}\\Report_Document.csv', 'w', encoding='utf-8') as fout:
 					fout.write(csvContent)
 				print('CSV document report file successfully created')
 			except:
@@ -316,7 +321,7 @@ col_layout = [[sg.Frame('Choose File Category to Harvest', CheckboxFrameLayout, 
 layout = [[sg.Menu(menu_def, key='-MENUBAR-')],
 			[sg.Column(col_layout, element_justification='c',background_color='#2a363b'), sg.Frame('Verbose Analysis',
 			[[sg.Output(size=(70,25), key='-OUT-', background_color='#334147', text_color='#fefbd8')]], background_color='#2a363b')],
-			[sg.Text('FileHarvester Ver. 1.0.0', background_color='#2a363b', text_color='#b2c2bf')]]
+			[sg.Text('FileHarvester Ver. 1.2.0', background_color='#2a363b', text_color='#b2c2bf')]]
 
 window = sg.Window('FileHarvester', layout, background_color='#2a363b') 
 
@@ -333,7 +338,7 @@ while True:
 		except:
 			sg.PopupOK('Visit https://github.com/D-Kats for documentation', title='Documentation', background_color='#2a363b')
 	if event == 'About':
-		sg.PopupOK('FileHarvester Ver. 1.0.0 \n\n --DKats 2020', title='-About-', background_color='#2a363b')
+		sg.PopupOK('FileHarvester Ver. 1.2.0 \n\n --DKats 2020', title='-About-', background_color='#2a363b')
 #---checkbox events
 	if event == '-KEYWORDCHK-': # an energopoihsei ta keywords
 		if values['-KEYWORDCHK-']:
@@ -354,24 +359,94 @@ while True:
 				print('Calculating Document files total size...')
 				CalculateFileCategory = 'documents'
 				CalculateDocumentTotalSize = calculate(CalculateInputFolder, CalculateFileCategory)
-				print(f'Document files total size is {CalculateDocumentTotalSize} bytes')
+				
+				if len(CalculateDocumentTotalSize) > 12:
+					size = int(CalculateDocumentTotalSize)/(1024*1024*1024*1024)
+					print(f'Document files total size is {size} TBs')
+				elif len(CalculateDocumentTotalSize) > 9:
+					size = int(CalculateDocumentTotalSize)/(1024*1024*1024)
+					print(f'Document files total size is {size} GBs')
+				elif len(CalculateDocumentTotalSize) > 6:
+					size = int(CalculateDocumentTotalSize)/(1024*1024)
+					print(f'Document files total size is {size} MBs')
+				elif len(CalculateDocumentTotalSize) > 3:
+					size = int(CalculateDocumentTotalSize)/1024
+					print(f'Document files total size is {size} KBs')
+				else:
+					print(f'Document files total size is {CalculateDocumentTotalSize} bytes')
 				#---neo call gia media
 				print('Calculating Media files total size...')
 				CalculateFileCategory = 'media'
 				CalculateMediaTotalSize = calculate(CalculateInputFolder, CalculateFileCategory)
-				print(f'Media files total size is {CalculateMediaTotalSize} bytes')
-				total = CalculateDocumentTotalSize + CalculateMediaTotalSize
-				print(f'All files have size of {total} bytes')
+				
+				if len(CalculateMediaTotalSize) > 12:
+					size = int(CalculateMediaTotalSize)/(1024*1024*1024*1024)
+					print(f'Media files total size is {size} TBs')
+				elif len(CalculateMediaTotalSize) > 9:
+					size = int(CalculateMediaTotalSize)/(1024*1024*1024)
+					print(f'Media files total size is {size} GBs')
+				elif len(CalculateMediaTotalSize) > 6:
+					size = int(CalculateMediaTotalSize)/(1024*1024)
+					print(f'Media files total size is {size} MBs')
+				elif len(CalculateMediaTotalSize) > 3:
+					size = int(CalculateMediaTotalSize)/1024
+					print(f'Media files total size is {size} KBs')
+				else:
+					print(f'Media files total size is {CalculateMediaTotalSize} bytes')
+
+				total_int = int(CalculateDocumentTotalSize) + int(CalculateMediaTotalSize)				
+				total = str(total_int)
+				
+				if len(total) > 12:
+					size = int(total)/(1024*1024*1024*1024)
+					print(f'All files total size is {size} TBs')
+				elif len(total) > 9:
+					size = int(total)/(1024*1024*1024)
+					print(f'All files total size is {size} GBs')
+				elif len(total) > 6:
+					size = int(total)/(1024*1024)
+					print(f'All files total size is {size} MBs')
+				elif len(total) > 3:
+					size = int(total)/1024
+					print(f'All files total size is {size} KBs')
+				else:
+					print(f'All files have size of {total} bytes')
 			elif values['-DOCCHK-']: # exei epileksei mono documents gia calculate
 				print('Calculating Document files total size...')
 				CalculateFileCategory = 'documents'
 				CalculateDocumentTotalSize = calculate(CalculateInputFolder, CalculateFileCategory)
-				print(f'Document files total size is {CalculateDocumentTotalSize} bytes')
+				if len(CalculateDocumentTotalSize) > 12:
+					size = int(CalculateDocumentTotalSize)/(1024*1024*1024*1024)
+					print(f'Document files total size is {size} TBs')
+				elif len(CalculateDocumentTotalSize) > 9:
+					size = int(CalculateDocumentTotalSize)/(1024*1024*1024)
+					print(f'Document files total size is {size} GBs')
+				elif len(CalculateDocumentTotalSize) > 6:
+					size = int(CalculateDocumentTotalSize)/(1024*1024)
+					print(f'Document files total size is {size} MBs')
+				elif len(CalculateDocumentTotalSize) > 3:
+					size = int(CalculateDocumentTotalSize)/1024
+					print(f'Document files total size is {size} KBs')
+				else:
+					print(f'Document files total size is {CalculateDocumentTotalSize} bytes')
 			else: # exei epileksei mono media gia calculate
 				print('Calculating Media files total size...')
 				CalculateFileCategory = 'media'
 				CalculateMediaTotalSize = calculate(CalculateInputFolder, CalculateFileCategory)
-				print(f'Media files total size is {CalculateMediaTotalSize} bytes')
+				if len(CalculateMediaTotalSize) > 12:
+					size = int(CalculateMediaTotalSize)/(1024*1024*1024*1024)
+					print(f'Media files total size is {size} TBs')
+				elif len(CalculateMediaTotalSize) > 9:
+					size = int(CalculateMediaTotalSize)/(1024*1024*1024)
+					print(f'Media files total size is {size} GBs')
+				elif len(CalculateMediaTotalSize) > 6:
+					size = int(CalculateMediaTotalSize)/(1024*1024)
+					print(f'Media files total size is {size} MBs')
+				elif len(CalculateMediaTotalSize) > 3:
+					size = int(CalculateMediaTotalSize)/1024
+					print(f'Media files total size is {size} KBs')
+				else:
+					print(f'Media files total size is {CalculateMediaTotalSize} bytes')
 
 	if event == "Harvest":
 		if values['-FOLDER-'] == '': # den exei epileksei fakelo gia analysh
