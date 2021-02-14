@@ -5,7 +5,7 @@ A small DFIR triage tool to collect files of interest.
 
 The tool will then create a CSV report file containing the copied file's original path, created and last modified timestamp, the name it has in the output folder (given the fact that files with same names cannot exist in the same folder and thus are being renamed) as well as a flag for providing more info on the copy action. 
 
-The output folder, containing the copied harvested files and the CSV report, is then being zipped and MD5 hashed. The whole procedure is being reported in the verbose analysis pane of the tool and a log file is being created in the output folder after the completion of the analysis. 
+The output folder, containing the copied harvested files, is then being zipped and MD5 hashed. The whole procedure is being reported in the verbose analysis pane of the tool and a log file is being created in the output folder after the completion of the analysis, along with the aforementioned CSV report. 
 
 Similar tools exist for sure but this one is by far the quickest implementation when you want a specific collection from a targeted folder (e.g. the whole user folder on a Windows machine). Original file's metadata are not being altered and thus the whole harvesting procedure leaves the computer files intact.
 
